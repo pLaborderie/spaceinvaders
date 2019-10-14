@@ -1,1 +1,1 @@
-![](https://github.com/plaborderie/spaceinvaders/workflows/Node%20CI/badge.svg)
+![](https://github.com/pLaborderie/spaceinvaders/workflows/Node%20CI/badge.svg)
