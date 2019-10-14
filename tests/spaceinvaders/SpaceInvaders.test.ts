@@ -31,7 +31,7 @@ describe('Testing SpaceInvaders class', function () {
   });
 
   it('should be correctly positioned', function () {
-    spaceInvaders.positionnerUnNouveauVaisseau(7, 9);
+    spaceInvaders.positionnerUnNouveauVaisseau(new Dimension(1, 1), new Position(7, 9));
     expect("" +
       "...............\n" +
       "...............\n" +
@@ -144,25 +144,8 @@ describe('Testing SpaceInvaders class', function () {
     }
   });
 
-  it('should move the ship to the right', function () {
-    spaceInvaders.positionnerUnNouveauVaisseau(new Dimension(3, 2), new Position(7, 9));
-    spaceInvaders.deplacerVaisseauVersLaDroite();
-    expect("" +
-      "...............\n" +
-      "...............\n" +
-      "...............\n" +
-      "...............\n" +
-      "...............\n" +
-      "...............\n" +
-      "...............\n" +
-      "...............\n" +
-      "........VVV....\n" +
-      "........VVV....\n")
-      .to.be.equal(spaceInvaders.recupererEspaceJeuDansChaineASCII());
-  });
-
   it('should NOT move ship to the right', function () {
-    spaceInvaders.positionnerUnNouveauVaisseau(new Dimension(3, 2), new Position(12, 9));
+    spaceInvaders.positionnerUnNouveauVaisseau(new Dimension(3, 2), new Position(12, 9), 3);
     spaceInvaders.deplacerVaisseauVersLaDroite();
     expect("" +
       "...............\n" +
@@ -179,7 +162,7 @@ describe('Testing SpaceInvaders class', function () {
   });
 
   it('should move ship to the left', function () {
-    spaceInvaders.positionnerUnNouveauVaisseau(new Dimension(3, 2), new Position(7, 9));
+    spaceInvaders.positionnerUnNouveauVaisseau(new Dimension(3, 2), new Position(7, 9), 3);
     spaceInvaders.deplacerVaisseauVersLaGauche();
 
     expect("" +
@@ -191,15 +174,66 @@ describe('Testing SpaceInvaders class', function () {
       "...............\n" +
       "...............\n" +
       "...............\n" +
-      "......VVV......\n" +
-      "......VVV......\n")
+      "....VVV........\n" +
+      "....VVV........\n")
       .to.be.equal(spaceInvaders.recupererEspaceJeuDansChaineASCII());
   });
 
   it('should NOT move ship to the left', function () {
-    spaceInvaders.positionnerUnNouveauVaisseau(new Dimension(3, 2), new Position(0, 9));
+    spaceInvaders.positionnerUnNouveauVaisseau(new Dimension(3, 2), new Position(0, 9), 3);
     spaceInvaders.deplacerVaisseauVersLaGauche();
 
+    expect("" +
+      "...............\n" +
+      "...............\n" +
+      "...............\n" +
+      "...............\n" +
+      "...............\n" +
+      "...............\n" +
+      "...............\n" +
+      "...............\n" +
+      "VVV............\n" +
+      "VVV............\n")
+      .to.be.equal(spaceInvaders.recupererEspaceJeuDansChaineASCII());
+  });
+
+  it('shoud move the ship to the right', function () {
+    spaceInvaders.positionnerUnNouveauVaisseau(new Dimension(3, 2), new Position(7, 9), 3);
+    spaceInvaders.deplacerVaisseauVersLaDroite();
+    expect("" +
+      "...............\n" +
+      "...............\n" +
+      "...............\n" +
+      "...............\n" +
+      "...............\n" +
+      "...............\n" +
+      "...............\n" +
+      "...............\n" +
+      "..........VVV..\n" +
+      "..........VVV..\n")
+      .to.be.equal(spaceInvaders.recupererEspaceJeuDansChaineASCII());
+  });
+
+  it('should partially move the ship to the right', function () {
+    spaceInvaders.positionnerUnNouveauVaisseau(new Dimension(3, 2), new Position(10, 9), 3);
+    spaceInvaders.deplacerVaisseauVersLaDroite();
+    expect("" +
+      "...............\n" +
+      "...............\n" +
+      "...............\n" +
+      "...............\n" +
+      "...............\n" +
+      "...............\n" +
+      "...............\n" +
+      "...............\n" +
+      "............VVV\n" +
+      "............VVV\n")
+      .to.be.equal(spaceInvaders.recupererEspaceJeuDansChaineASCII());
+  });
+
+  it('should partially move the ship to the left', function () {
+    spaceInvaders.positionnerUnNouveauVaisseau(new Dimension(3, 2), new Position(1, 9), 3);
+    spaceInvaders.deplacerVaisseauVersLaGauche();
     expect("" +
       "...............\n" +
       "...............\n" +

@@ -13,10 +13,10 @@ export default class Vaisseau {
   private vitesse: number;
 
   public constructor(longueur: number, hauteur: number, x?: number, y?: number);
-  public constructor(origine: Position, dimension: Dimension, vitesse?: number);
+  public constructor(dimension: Dimension, origine: Position, vitesse?: number);
   public constructor(
-    a1: number | Position,
-    a2: number | Dimension,
+    a1: number | Dimension,
+    a2: number | Position,
     a3?: number,
     a4?: number,
   ) {
@@ -26,12 +26,12 @@ export default class Vaisseau {
     this.vitesse = vitesse;
   }
 
-  private formatConstructorParams(a1: number | Position, a2: number | Dimension, a3: number | undefined, a4: number | undefined) {
+  private formatConstructorParams(a1: number | Dimension, a2: number | Position, a3: number | undefined, a4: number | undefined) {
     if (typeof a1 === "number" && typeof a2 === "number") {
       return this.numbersConstructor(a1, a2, a3, a4);
     }
-    else if (a1 instanceof Position && a2 instanceof Dimension) {
-      return this.classesConstructor(a1, a2);
+    else if (a1 instanceof Dimension && a2 instanceof Position) {
+      return this.classesConstructor(a1, a2, a3);
     }
     else {
       throw new Error("Incorrect params");
@@ -46,12 +46,16 @@ export default class Vaisseau {
     };
   }
 
-  private classesConstructor(position: Position, dimension: Dimension, vitesse: number = 1): IVaisseau {
+  private classesConstructor(dimension: Dimension, position: Position, vitesse: number = 1): IVaisseau {
     return {
       dimension,
       origine: position,
       vitesse,
     };
+  }
+
+  public longueur(): number {
+    return this.dimension.getLongueur();
   }
 
   public abscisseLaPlusAGauche(): number {
@@ -62,11 +66,11 @@ export default class Vaisseau {
     return this.abscisseLaPlusAGauche() + this.dimension.getLongueur() - 1;
   }
 
-  private ordonneeLaPlusHaute(): number {
+  public ordonneeLaPlusHaute(): number {
     return this.origine.ordonnee();
   }
 
-  private ordonneeLaPlusBasse(): number {
+  public ordonneeLaPlusBasse(): number {
     return this.ordonneeLaPlusHaute() - this.dimension.getHauteur() + 1;
   }
 

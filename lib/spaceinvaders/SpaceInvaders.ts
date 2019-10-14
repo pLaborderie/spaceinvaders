@@ -40,26 +40,11 @@ export default class SpaceInvaders {
     return !!this.vaisseau && this.vaisseau.occupeLaPosition(x, y);
   }
 
-  public positionnerUnNouveauVaisseau(x: number, y: number): void;
-  public positionnerUnNouveauVaisseau(dimension: Dimension, position: Position): void;
-  public positionnerUnNouveauVaisseau(a1: Dimension | number, a2: Position | number): void {
-    let x: number;
-    let y: number;
-    let longueurVaisseau: number;
-    let hauteurVaisseau: number;
-    if (typeof a1 === "number" && typeof a2 === "number") {
-      x = a1;
-      y = a2;
-      longueurVaisseau = 1;
-      hauteurVaisseau = 1;
-    } else if (a1 instanceof Dimension && a2 instanceof Position) {
-      x = a2.abscisse();
-      y = a2.ordonnee();
-      longueurVaisseau = a1.getLongueur();
-      hauteurVaisseau = a1.getHauteur();
-    } else {
-      throw new Error("Arguments invalid");
-    }
+  public positionnerUnNouveauVaisseau(dimension: Dimension, position: Position, vitesse: number = 1): void {
+    let x: number = position.abscisse();
+    let y: number = position.ordonnee();
+    let longueurVaisseau: number = dimension.getLongueur();
+    let hauteurVaisseau: number = dimension.getHauteur();
 
     if (!this.estDansEspaceJeu(x, y)) {
       throw new HorsEspaceJeuException("La position du vaisseau est en dehors de l'espace jeu");
@@ -71,8 +56,7 @@ export default class SpaceInvaders {
     if (!this.estDansEspaceJeu(x, y - hauteurVaisseau + 1)) {
       throw new DebordementEspaceJeuException("Le vaisseau déborde de l'espace jeu vers le bas à cause de sa hauteur");
     }
-    this.vaisseau = new Vaisseau(longueurVaisseau, hauteurVaisseau);
-    this.vaisseau.positionner(x, y);
+    this.vaisseau = new Vaisseau(dimension, position, vitesse);
   }
 
   private estDansEspaceJeu(x: number, y: number): boolean {
@@ -82,12 +66,18 @@ export default class SpaceInvaders {
   public deplacerVaisseauVersLaDroite(): void {
     if (this.vaisseau && this.vaisseau.abscisseLaPlusADroite() < this.longueur - 1) {
       this.vaisseau.seDeplacerVersLaDroite();
+      if (!this.estDansEspaceJeu(this.vaisseau.abscisseLaPlusADroite(), this.vaisseau.ordonneeLaPlusHaute())) {
+        this.vaisseau.positionner(this.longueur - this.vaisseau.longueur(), this.vaisseau.ordonneeLaPlusHaute());
+      }
     }
   }
 
   public deplacerVaisseauVersLaGauche(): void {
     if (this.vaisseau && this.vaisseau.abscisseLaPlusAGauche() > 0) {
       this.vaisseau.seDeplacerVersLaGauche();
+      if (!this.estDansEspaceJeu(this.vaisseau.abscisseLaPlusAGauche(), this.vaisseau.ordonneeLaPlusHaute())) {
+        this.vaisseau.positionner(0, this.vaisseau.ordonneeLaPlusHaute());
+      }
     }
   }
 }
