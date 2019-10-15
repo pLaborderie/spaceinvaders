@@ -4,7 +4,6 @@ import "mocha";
 import SpaceInvaders from "../../lib/spaceinvaders/SpaceInvaders";
 import Dimension from "../../lib/spaceinvaders/Dimension";
 import Position from "../../lib/spaceinvaders/Position";
-import { AssertionError } from "assert";
 import HorsEspaceJeuException from "../../lib/spaceinvaders/utils/HorsEspaceJeuException";
 import DebordementEspaceJeuException from "../../lib/spaceinvaders/utils/DebordementEspaceJeuException";
 
