@@ -1,8 +1,8 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import SpaceInvaders from "../../lib/spaceinvaders/SpaceInvaders";
-import Dimension from "../../lib/spaceinvaders/Dimension";
-import Position from "../../lib/spaceinvaders/Position";
+import SpaceInvaders from "../../lib/spaceinvaders/model/SpaceInvaders";
+import Dimension from "../../lib/spaceinvaders/model/Dimension";
+import Position from "../../lib/spaceinvaders/model/Position";
 
 export interface IAppProps {
   width?: number,

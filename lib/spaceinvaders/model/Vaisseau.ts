@@ -2,7 +2,7 @@ import Position from "./Position";
 import Dimension from "./Dimension";
 import Sprite from "./Sprite";
 import Missile from "./Missile";
-import MissileException from "./utils/MissileException";
+import MissileException from "../utils/MissileException";
 
 interface IVaisseau {
   origine: Position;

@@ -1,10 +1,10 @@
 import Dimension from './Dimension';
 import Position from './Position';
 import Vaisseau from './Vaisseau';
-import HorsEspaceJeuException from './utils/HorsEspaceJeuException';
-import DebordementEspaceJeuException from './utils/DebordementEspaceJeuException';
+import HorsEspaceJeuException from '../utils/HorsEspaceJeuException';
+import DebordementEspaceJeuException from '../utils/DebordementEspaceJeuException';
 import Missile from './Missile';
-import MissileException from './utils/MissileException';
+import MissileException from '../utils/MissileException';
 import Direction from './Direction';
 
 export default class SpaceInvaders {

@@ -1,9 +1,9 @@
 import { expect } from "chai";
 import "mocha";
 
-import SpaceInvaders from "../../lib/spaceinvaders/SpaceInvaders";
-import Dimension from "../../lib/spaceinvaders/Dimension";
-import Position from "../../lib/spaceinvaders/Position";
+import SpaceInvaders from "../../lib/spaceinvaders/model/SpaceInvaders";
+import Dimension from "../../lib/spaceinvaders/model/Dimension";
+import Position from "../../lib/spaceinvaders/model/Position";
 import HorsEspaceJeuException from "../../lib/spaceinvaders/utils/HorsEspaceJeuException";
 import DebordementEspaceJeuException from "../../lib/spaceinvaders/utils/DebordementEspaceJeuException";
 import MissileException from "../../lib/spaceinvaders/utils/MissileException";
@@ -248,68 +248,68 @@ describe('Testing SpaceInvaders class', function () {
       .to.be.equal(spaceInvaders.recupererEspaceJeuDansChaineASCII());
   });
 
-  it('should display ship firing missile', function() {
+  it('should display ship firing missile', function () {
     spaceInvaders.positionnerUnNouveauVaisseau(new Dimension(7, 2), new Position(5, 9), 2);
     spaceInvaders.tirerUnMissile(new Dimension(3, 2), 2);
-    expect("" + 
-      "...............\n" + 
+    expect("" +
       "...............\n" +
-      "...............\n" + 
-      "...............\n" + 
-      "...............\n" + 
-      "...............\n" + 
-      ".......MMM.....\n" + 
-      ".......MMM.....\n" + 
-      ".....VVVVVVV...\n" + 
+      "...............\n" +
+      "...............\n" +
+      "...............\n" +
+      "...............\n" +
+      "...............\n" +
+      ".......MMM.....\n" +
+      ".......MMM.....\n" +
+      ".....VVVVVVV...\n" +
       ".....VVVVVVV...\n")
       .to.be.equal(spaceInvaders.recupererEspaceJeuDansChaineASCII());
   });
 
-  it("should throw MissileException when missile height is superior to game height", function() {
+  it("should throw MissileException when missile height is superior to game height", function () {
     spaceInvaders.positionnerUnNouveauVaisseau(new Dimension(7, 2), new Position(5, 9), 1);
     expect(() => {
       spaceInvaders.tirerUnMissile(new Dimension(7, 9), 1);
     }).to.throw(MissileException);
   });
 
-  it("should automatically move missile forward after shooting", function() {
+  it("should automatically move missile forward after shooting", function () {
     spaceInvaders.positionnerUnNouveauVaisseau(new Dimension(7, 2), new Position(5, 9), 2);
     spaceInvaders.tirerUnMissile(new Dimension(3, 2), 2);
 
     spaceInvaders.deplacerMissile();
 
-    expect("" + 
-      "...............\n" + 
+    expect("" +
       "...............\n" +
-      "...............\n" + 
-      "...............\n" + 
-      ".......MMM.....\n" + 
-      ".......MMM.....\n" + 
-      "...............\n" + 
-      "...............\n" + 
-      ".....VVVVVVV...\n" + 
+      "...............\n" +
+      "...............\n" +
+      "...............\n" +
+      ".......MMM.....\n" +
+      ".......MMM.....\n" +
+      "...............\n" +
+      "...............\n" +
+      ".....VVVVVVV...\n" +
       ".....VVVVVVV...\n")
       .to.be.equal(spaceInvaders.recupererEspaceJeuDansChaineASCII());
   });
 
-  it("should destroy missile when out of bounds", function() {
-    spaceInvaders.positionnerUnNouveauVaisseau(new Dimension(7,2),new Position(5,9), 1);
-    spaceInvaders.tirerUnMissile(new Dimension(3,2),1);
+  it("should destroy missile when out of bounds", function () {
+    spaceInvaders.positionnerUnNouveauVaisseau(new Dimension(7, 2), new Position(5, 9), 1);
+    spaceInvaders.tirerUnMissile(new Dimension(3, 2), 1);
 
     for (let i: number = 1; i <= 6; i++) {
       spaceInvaders.deplacerMissile();
     }
 
     expect("" +
-      "...............\n" + 
-      "...............\n" +
-      "...............\n" + 
       "...............\n" +
       "...............\n" +
-      "...............\n" + 
       "...............\n" +
-      "...............\n" + 
-      ".....VVVVVVV...\n" + 
+      "...............\n" +
+      "...............\n" +
+      "...............\n" +
+      "...............\n" +
+      "...............\n" +
+      ".....VVVVVVV...\n" +
       ".....VVVVVVV...\n")
       .to.be.equal(spaceInvaders.recupererEspaceJeuDansChaineASCII());
   });
