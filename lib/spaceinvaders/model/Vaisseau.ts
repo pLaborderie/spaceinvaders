@@ -4,12 +4,6 @@ import Sprite from "./Sprite";
 import Missile from "./Missile";
 import MissileException from "../utils/MissileException";
 
-interface IVaisseau {
-  origine: Position;
-  dimension: Dimension;
-  vitesse: number;
-}
-
 export default class Vaisseau extends Sprite {
   public constructor(dimension: Dimension, origine: Position, vitesse: number = 1) {
     super(dimension, origine, vitesse);
@@ -24,8 +18,8 @@ export default class Vaisseau extends Sprite {
   }
 
   private calculerLaPositionDeTirDuMissile(dimension: Dimension): Position {
-    const abscisseMilieuVaisseau: number = this.abscisseLaPlusAGauche() + (this.longueur() / 2);
-    const abscisseOrigineMissile: number = abscisseMilieuVaisseau - (dimension.getLongueur() / 2);
+    const abscisseMilieuVaisseau: number = Math.floor(this.abscisseLaPlusAGauche() + (this.longueur() / 2));
+    const abscisseOrigineMissile: number = Math.floor(abscisseMilieuVaisseau - (dimension.getLongueur() / 2));
     const ordonneeOrigineMissile: number = this.ordonneeLaPlusBasse() - 1;
     return new Position(abscisseOrigineMissile, ordonneeOrigineMissile);
   }
