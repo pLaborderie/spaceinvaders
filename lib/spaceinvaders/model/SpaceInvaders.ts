@@ -34,6 +34,17 @@ export default class SpaceInvaders implements Jeu {
     return espaceDeJeu;
   }
 
+  public recupererEspaceJeuDansChaineEmojis(): string {
+    let espaceDeJeu: string = '';
+    for (let y: number = 0; y < this.hauteur; y++) {
+      for (let x: number = 0; x < this.longueur; x++) {
+        espaceDeJeu += this.recupererEmojiDeLaPosition(x, y);
+      }
+      espaceDeJeu += Constante.MARQUE_FIN_LIGNE;
+    }
+    return espaceDeJeu;
+  }
+
   private recupererMarqueDeLaPosition(x: number, y: number): string {
     if (this.aUnVaisseauQuiOccupeLaPosition(x, y)) {
       return Constante.MARQUE_VAISSEAU;
@@ -45,6 +56,19 @@ export default class SpaceInvaders implements Jeu {
       return Constante.MARQUE_ENVAHISSEUR;
     }
     return Constante.MARQUE_VIDE;
+  }
+
+  private recupererEmojiDeLaPosition(x: number, y: number): string {
+    if (this.aUnVaisseauQuiOccupeLaPosition(x, y)) {
+      return Constante.EMOJI_VAISSEAU;
+    }
+    if (this.aUnMissileQuiOccupeLaPosition(x, y)) {
+      return Constante.EMOJI_MISSILE;
+    }
+    if (this.aUnEnvahisseurQuiOccupeLaPosition(x, y)) {
+      return Constante.EMOJI_ENVAHISSEUR;
+    }
+    return Constante.EMOJI_VIDE;
   }
 
   aUnEnvahisseurQuiOccupeLaPosition(x: number, y: number): boolean {

@@ -1,9 +1,14 @@
 export default class Constante {
   public static readonly MARQUE_FIN_LIGNE: string = '\n';
-  public static readonly MARQUE_VIDE: string = '󠀠◻️';
-  public static readonly MARQUE_VAISSEAU: string = '🛸';
-  public static readonly MARQUE_MISSILE: string = '🚀';
-  public static readonly MARQUE_ENVAHISSEUR: string = '👾';
+  public static readonly MARQUE_VIDE: string = '.';
+  public static readonly MARQUE_VAISSEAU: string = 'V';
+  public static readonly MARQUE_MISSILE: string = 'M';
+  public static readonly MARQUE_ENVAHISSEUR: string = 'E';
+
+  public static readonly EMOJI_VIDE: string = '󠀠◻️';
+  public static readonly EMOJI_VAISSEAU: string = '🛸';
+  public static readonly EMOJI_MISSILE: string = '🚀';
+  public static readonly EMOJI_ENVAHISSEUR: string = '👾';
 
   public static readonly ESPACEJEU_LONGUEUR: number = 50;
   public static readonly ESPACEJEU_HAUTEUR: number = 25;

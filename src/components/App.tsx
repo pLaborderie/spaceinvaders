@@ -23,7 +23,7 @@ export default function App() {
 
   function updateGame() {
     if (spaceinvaders) {
-      setGame(spaceinvaders.recupererEspaceJeuDansChaineASCII());
+      setGame(spaceinvaders.recupererEspaceJeuDansChaineEmojis());
     }
   }
 

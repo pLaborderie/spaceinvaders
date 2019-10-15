@@ -18,8 +18,8 @@ export default class Vaisseau extends Sprite {
   }
 
   private calculerLaPositionDeTirDuMissile(dimension: Dimension): Position {
-    const abscisseMilieuVaisseau: number = Math.floor(this.abscisseLaPlusAGauche() + (this.longueur() / 2));
-    const abscisseOrigineMissile: number = Math.floor(abscisseMilieuVaisseau - (dimension.getLongueur() / 2));
+    const abscisseMilieuVaisseau: number = this.abscisseLaPlusAGauche() + Math.round(this.longueur() / 2);
+    const abscisseOrigineMissile: number = abscisseMilieuVaisseau - Math.round(dimension.getLongueur() / 2);
     const ordonneeOrigineMissile: number = this.ordonneeLaPlusBasse() - 1;
     return new Position(abscisseOrigineMissile, ordonneeOrigineMissile);
   }
