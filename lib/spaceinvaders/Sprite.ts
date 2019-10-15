@@ -1,5 +1,6 @@
 import Position from "./Position";
 import Dimension from "./Dimension";
+import Direction from "./Direction";
 
 interface ISprite {
   origine: Position;
@@ -20,6 +21,10 @@ export default abstract class Sprite {
 
   public longueur(): number {
     return this.dimension.getLongueur();
+  }
+
+  public hauteur(): number {
+    return this.dimension.getHauteur();
   }
 
   public abscisseLaPlusAGauche(): number {
@@ -51,11 +56,23 @@ export default abstract class Sprite {
   }
 
   public seDeplacerVersLaDroite(): void {
-    this.origine.changerAbscisse(this.origine.abscisse() + this.vitesse);
+    this.deplacerHorizontalementVers(Direction.DROITE);
   }
 
   public seDeplacerVersLaGauche(): void {
-    this.origine.changerAbscisse(this.origine.abscisse() - this.vitesse);
+    this.deplacerHorizontalementVers(Direction.GAUCHE);
+  }
+
+  public deplacerVersLeHaut(): void {
+    this.deplacerVerticalementVers(Direction.HAUT);
+  }
+
+  public deplacerVerticalementVers(direction: Direction): void {
+    this.origine.changerOrdonnee(this.origine.ordonnee() + direction.getValeur() * this.vitesse);
+  }
+
+  public deplacerHorizontalementVers(direction: Direction) {
+      this.origine.changerAbscisse(this.origine.abscisse() + direction.getValeur() * this.vitesse);
   }
 
   public positionner(x: number, y: number): void {

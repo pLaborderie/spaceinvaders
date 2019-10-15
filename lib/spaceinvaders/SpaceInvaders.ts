@@ -3,15 +3,20 @@ import Position from './Position';
 import Vaisseau from './Vaisseau';
 import HorsEspaceJeuException from './utils/HorsEspaceJeuException';
 import DebordementEspaceJeuException from './utils/DebordementEspaceJeuException';
+import Missile from './Missile';
+import MissileException from './utils/MissileException';
+import Direction from './Direction';
 
 export default class SpaceInvaders {
   private static readonly MARQUE_FIN_LIGNE: string = '\n';
   private static readonly MARQUE_VIDE: string = '.';
   private static readonly MARQUE_VAISSEAU: string = 'V';
+  private static readonly MARQUE_MISSILE: string = 'M';
 
   private longueur: number;
   private hauteur: number;
   private vaisseau?: Vaisseau;
+  private missile?: Missile;
 
   public constructor(longueur: number, hauteur: number) {
     this.longueur = longueur;
@@ -33,7 +38,14 @@ export default class SpaceInvaders {
     if (this.aUnVaisseauQuiOccupeLaPosition(x, y)) {
       return SpaceInvaders.MARQUE_VAISSEAU;
     }
+    if (this.aUnMissileQuiOccupeLaPosition(x, y)) {
+      return SpaceInvaders.MARQUE_MISSILE;
+    }
     return SpaceInvaders.MARQUE_VIDE;
+  }
+
+  aUnMissileQuiOccupeLaPosition(x: number, y: number): boolean {
+    return !!this.missile && this.missile.occupeLaPosition(x, y);
   }
 
   private aUnVaisseauQuiOccupeLaPosition(x: number, y: number): boolean {
@@ -77,6 +89,30 @@ export default class SpaceInvaders {
       this.vaisseau.seDeplacerVersLaGauche();
       if (!this.estDansEspaceJeu(this.vaisseau.abscisseLaPlusAGauche(), this.vaisseau.ordonneeLaPlusHaute())) {
         this.vaisseau.positionner(0, this.vaisseau.ordonneeLaPlusHaute());
+      }
+    }
+  }
+
+  public tirerUnMissile(dimension: Dimension, vitesse: number) {
+    if (this.vaisseau) {
+      if (this.vaisseau.hauteur() + dimension.getHauteur() > this.hauteur) {
+        throw new MissileException("Pas assez de hauteur libre entre le vaisseau et le haut de l'espace jeu pour tirer le missile");
+      }
+      this.missile = this.vaisseau.tirerUnMissile(dimension, vitesse);
+    } else {
+      throw new Error("Vaisseau is not defined");
+    }
+  }
+
+  aUnMissile(): boolean {
+    return this.missile instanceof Missile;
+  }
+
+  deplacerMissile(): void {
+    if (this.missile) {
+      this.missile.deplacerVerticalementVers(Direction.HAUT_ECRAN);
+      if (this.missile.ordonneeLaPlusBasse() <= 0) {
+        delete this.missile;
       }
     }
   }

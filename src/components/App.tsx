@@ -11,18 +11,30 @@ export interface IAppProps {
 
 let spaceinvaders: SpaceInvaders;
 
+const SPACE = 32;
+const LEFT_ARROW = 37;
+const RIGHT_ARROW = 39;
+
 export default function App(props: IAppProps) {
   const [game, setGame]: [string, any] = useState("");
 
   useEffect(() => {
     initGame();
     document.addEventListener("keydown", keyDownListener);
+    setInterval(() => {
+      tick();
+    }, 500);
   }, []);
 
   function updateGame() {
     if (spaceinvaders) {
       setGame(spaceinvaders.recupererEspaceJeuDansChaineASCII());
     }
+  }
+
+  function tick(): void {
+    spaceinvaders.deplacerMissile();
+    updateGame();
   }
 
   function initGame(): void {
@@ -41,12 +53,22 @@ export default function App(props: IAppProps) {
     updateGame();
   }
 
+  function fireMissile(): void {
+    if (!spaceinvaders.aUnMissile()) {
+      spaceinvaders.tirerUnMissile(new Dimension(1, 2), 2);
+      updateGame();
+    }
+  }
+
   function keyDownListener(e: KeyboardEvent): void {
     switch (e.keyCode) {
-      case 37:
+      case SPACE:
+        fireMissile();
+        break;
+      case LEFT_ARROW:
         moveLeft();
         break;
-      case 39:
+      case RIGHT_ARROW:
         moveRight();
         break;
     }
