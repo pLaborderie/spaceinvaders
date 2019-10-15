@@ -7,57 +7,15 @@ interface ISprite {
   vitesse: number;
 }
 
-export default class Sprite {
+export default abstract class Sprite {
   private origine: Position;
   private dimension: Dimension;
   private vitesse: number;
 
-  public constructor(longueur: number, hauteur: number, x?: number, y?: number);
-  public constructor(dimension: Dimension, origine: Position, vitesse?: number);
-  public constructor(
-    a1: number | Dimension,
-    a2: number | Position,
-    a3?: number,
-    a4?: number,
-  );
-  public constructor(
-    a1: number | Dimension,
-    a2: number | Position,
-    a3?: number,
-    a4?: number,
-  ) {
-    let { dimension, origine, vitesse } = this.formatConstructorParams(a1, a2, a3, a4);
+  public constructor(dimension: Dimension, origine: Position, vitesse: number) {
     this.dimension = dimension
     this.origine = origine;
     this.vitesse = vitesse;
-  }
-
-  private formatConstructorParams(a1: number | Dimension, a2: number | Position, a3: number | undefined, a4: number | undefined) {
-    if (typeof a1 === "number" && typeof a2 === "number") {
-      return this.numbersConstructor(a1, a2, a3, a4);
-    }
-    else if (a1 instanceof Dimension && a2 instanceof Position) {
-      return this.classesConstructor(a1, a2, a3);
-    }
-    else {
-      throw new Error("Incorrect params");
-    }
-  }
-
-  private numbersConstructor(longueur: number, hauteur: number, x: number = 0, y: number = 0): ISprite {
-    return {
-      dimension: new Dimension(longueur, hauteur),
-      origine: new Position(x, y),
-      vitesse: 1,
-    };
-  }
-
-  private classesConstructor(dimension: Dimension, position: Position, vitesse: number = 1): ISprite {
-    return {
-      dimension,
-      origine: position,
-      vitesse,
-    };
   }
 
   public longueur(): number {
