@@ -1,6 +1,6 @@
 export default class Constante {
   public static readonly MARQUE_FIN_LIGNE: string = '\n';
-  public static readonly MARQUE_VIDE: string = '◼️';
+  public static readonly MARQUE_VIDE: string = '󠀠◻️';
   public static readonly MARQUE_VAISSEAU: string = '🛸';
   public static readonly MARQUE_MISSILE: string = '🚀';
   public static readonly MARQUE_ENVAHISSEUR: string = '👾';
