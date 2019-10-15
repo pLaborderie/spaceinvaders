@@ -313,4 +313,44 @@ describe('Testing SpaceInvaders class', function () {
       ".....VVVVVVV...\n")
       .to.be.equal(spaceInvaders.recupererEspaceJeuDansChaineASCII());
   });
+
+  it("should display a ship and an invader", function () {
+    spaceInvaders.positionnerUnNouveauVaisseau(new Dimension(7, 2), new Position(5, 9), 1);
+    spaceInvaders.positionnerUnNouvelEnvahisseur(new Dimension(1, 1), new Position(9, 0), 1);
+
+    expect("" +
+      ".........E.....\n" +
+      "...............\n" +
+      "...............\n" +
+      "...............\n" +
+      "...............\n" +
+      "...............\n" +
+      "...............\n" +
+      "...............\n" +
+      ".....VVVVVVV...\n" +
+      ".....VVVVVVV...\n")
+      .to.be.equal(spaceInvaders.recupererEspaceJeuDansChaineASCII());
+  });
+
+  it("should display an invader that moved to the right and bounced back to the left and then back to the right", function () {
+    spaceInvaders.positionnerUnNouveauVaisseau(new Dimension(7, 2), new Position(5, 9), 1);
+    spaceInvaders.positionnerUnNouvelEnvahisseur(new Dimension(1, 1), new Position(9, 0), 1);
+
+    for (let i: number = 0; i < 20; i++) {
+      spaceInvaders.deplacerEnvahisseur();
+    }
+
+    expect("" +
+      ".E.............\n" +
+      "...............\n" +
+      "...............\n" +
+      "...............\n" +
+      "...............\n" +
+      "...............\n" +
+      "...............\n" +
+      "...............\n" +
+      ".....VVVVVVV...\n" +
+      ".....VVVVVVV...\n")
+      .to.be.equal(spaceInvaders.recupererEspaceJeuDansChaineASCII());
+  });
 });

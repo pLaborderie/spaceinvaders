@@ -34,12 +34,14 @@ export default function App(props: IAppProps) {
 
   function tick(): void {
     spaceinvaders.deplacerMissile();
+    spaceinvaders.deplacerEnvahisseur();
     updateGame();
   }
 
   function initGame(): void {
     spaceinvaders = new SpaceInvaders(props.width || 15, props.height || 10);
     spaceinvaders.positionnerUnNouveauVaisseau(new Dimension(3, 2), new Position(7, 9));
+    spaceinvaders.positionnerUnNouvelEnvahisseur(new Dimension(1, 1), new Position(9, 0), 1);
     updateGame();
   }
 

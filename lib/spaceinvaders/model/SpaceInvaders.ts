@@ -6,17 +6,20 @@ import DebordementEspaceJeuException from '../utils/DebordementEspaceJeuExceptio
 import Missile from './Missile';
 import MissileException from '../utils/MissileException';
 import Direction from './Direction';
+import Envahisseur from './Envahisseur';
 
 export default class SpaceInvaders {
   private static readonly MARQUE_FIN_LIGNE: string = '\n';
   private static readonly MARQUE_VIDE: string = '.';
   private static readonly MARQUE_VAISSEAU: string = 'V';
   private static readonly MARQUE_MISSILE: string = 'M';
+  private static readonly MARQUE_ENVAHISSEUR: string = 'E';
 
   private longueur: number;
   private hauteur: number;
   private vaisseau?: Vaisseau;
   private missile?: Missile;
+  private envahisseur?: Envahisseur;
 
   public constructor(longueur: number, hauteur: number) {
     this.longueur = longueur;
@@ -41,7 +44,14 @@ export default class SpaceInvaders {
     if (this.aUnMissileQuiOccupeLaPosition(x, y)) {
       return SpaceInvaders.MARQUE_MISSILE;
     }
+    if (this.aUnEnvahisseurQuiOccupeLaPosition(x, y)) {
+      return SpaceInvaders.MARQUE_ENVAHISSEUR;
+    }
     return SpaceInvaders.MARQUE_VIDE;
+  }
+
+  aUnEnvahisseurQuiOccupeLaPosition(x: number, y: number): boolean {
+    return !!this.envahisseur && this.envahisseur.occupeLaPosition(x, y);
   }
 
   aUnMissileQuiOccupeLaPosition(x: number, y: number): boolean {
@@ -53,22 +63,29 @@ export default class SpaceInvaders {
   }
 
   public positionnerUnNouveauVaisseau(dimension: Dimension, position: Position, vitesse: number = 1): void {
+    this.gestionErreursPositionNouvelElement(position, dimension);
+    this.vaisseau = new Vaisseau(dimension, position, vitesse);
+  }
+
+  public positionnerUnNouvelEnvahisseur(dimension: Dimension, position: Position, vitesse: number = 1): void {
+    this.gestionErreursPositionNouvelElement(position, dimension);
+    this.envahisseur = new Envahisseur(dimension, position, vitesse);
+  }
+
+  private gestionErreursPositionNouvelElement(position: Position, dimension: Dimension) {
     let x: number = position.abscisse();
     let y: number = position.ordonnee();
-    let longueurVaisseau: number = dimension.getLongueur();
-    let hauteurVaisseau: number = dimension.getHauteur();
-
+    let longueurElement: number = dimension.getLongueur();
+    let hauteurElement: number = dimension.getHauteur();
     if (!this.estDansEspaceJeu(x, y)) {
-      throw new HorsEspaceJeuException("La position du vaisseau est en dehors de l'espace jeu");
+      throw new HorsEspaceJeuException("La position de l'élément est en dehors de l'espace jeu");
     }
-
-    if (!this.estDansEspaceJeu(x + longueurVaisseau - 1, y)) {
-      throw new DebordementEspaceJeuException("Le vaisseau déborde de l'espace jeu vers la droite à cause de sa longueur");
+    if (!this.estDansEspaceJeu(x + longueurElement - 1, y)) {
+      throw new DebordementEspaceJeuException("L'élément déborde de l'espace jeu vers la droite à cause de sa longueur");
     }
-    if (!this.estDansEspaceJeu(x, y - hauteurVaisseau + 1)) {
-      throw new DebordementEspaceJeuException("Le vaisseau déborde de l'espace jeu vers le bas à cause de sa hauteur");
+    if (!this.estDansEspaceJeu(x, y - hauteurElement + 1)) {
+      throw new DebordementEspaceJeuException("L'élément déborde de l'espace jeu vers le bas à cause de sa hauteur");
     }
-    this.vaisseau = new Vaisseau(dimension, position, vitesse);
   }
 
   private estDansEspaceJeu(x: number, y: number): boolean {
@@ -115,5 +132,47 @@ export default class SpaceInvaders {
         delete this.missile;
       }
     }
+  }
+
+  deplacerEnvahisseur(): void {
+    if (this.envahisseur) {
+      if (this.envahisseurToucheLimite()) {
+        this.inverserDirectionEnvahisseur();
+      }
+      this.envahisseur.deplacerHorizontalement();
+    }
+  }
+
+  private inverserDirectionEnvahisseur(): void {
+    if (this.envahisseur) {
+      if (this.envahisseur.getDirection() === Direction.DROITE) {
+        this.envahisseur.changerDirection(Direction.GAUCHE);
+      } else {
+        this.envahisseur.changerDirection(Direction.DROITE);
+      }
+    }
+  }
+
+  private envahisseurToucheLimite(): boolean {
+    if (!this.envahisseur) {
+      return false;
+    }
+    const toucheADroite = this.envahisseur.getDirection() === Direction.DROITE && this.envahisseurToucheLimiteADroite();
+    const toucheAGauche = this.envahisseur.getDirection() === Direction.GAUCHE && this.envahisseurToucheLimiteAGauche();
+    return toucheADroite || toucheAGauche;
+  }
+
+  private envahisseurToucheLimiteADroite(): boolean {
+    if (!this.envahisseur) {
+      return false;
+    }
+    return this.envahisseur.abscisseLaPlusADroite() === (this.longueur - 1);
+  }
+
+  private envahisseurToucheLimiteAGauche(): boolean {
+    if (!this.envahisseur) {
+      return false;
+    }
+    return this.envahisseur.abscisseLaPlusAGauche() === 0;
   }
 }
