@@ -2,12 +2,7 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import SpaceInvaders from "../../lib/spaceinvaders/model/SpaceInvaders";
 import Dimension from "../../lib/spaceinvaders/model/Dimension";
-import Position from "../../lib/spaceinvaders/model/Position";
-
-export interface IAppProps {
-  width?: number,
-  height?: number,
-}
+import Constante from "../../lib/spaceinvaders/utils/Constante";
 
 let spaceinvaders: SpaceInvaders;
 
@@ -15,7 +10,7 @@ const SPACE = 32;
 const LEFT_ARROW = 37;
 const RIGHT_ARROW = 39;
 
-export default function App(props: IAppProps) {
+export default function App() {
   const [game, setGame]: [string, any] = useState("");
 
   useEffect(() => {
@@ -33,32 +28,27 @@ export default function App(props: IAppProps) {
   }
 
   function tick(): void {
-    spaceinvaders.deplacerMissile();
-    spaceinvaders.deplacerEnvahisseur();
+    spaceinvaders.evoluer();
     updateGame();
   }
 
   function initGame(): void {
-    spaceinvaders = new SpaceInvaders(props.width || 15, props.height || 10);
-    spaceinvaders.positionnerUnNouveauVaisseau(new Dimension(3, 2), new Position(7, 9));
-    spaceinvaders.positionnerUnNouvelEnvahisseur(new Dimension(1, 1), new Position(9, 0), 1);
+    spaceinvaders = new SpaceInvaders(Constante.ESPACEJEU_LONGUEUR, Constante.ESPACEJEU_HAUTEUR);
+    spaceinvaders.initialiserJeu();
     updateGame();
   }
 
   function moveLeft(): void {
     spaceinvaders.deplacerVaisseauVersLaGauche();
-    updateGame();
   }
 
   function moveRight(): void {
     spaceinvaders.deplacerVaisseauVersLaDroite();
-    updateGame();
   }
 
   function fireMissile(): void {
     if (!spaceinvaders.aUnMissile()) {
-      spaceinvaders.tirerUnMissile(new Dimension(1, 2), 2);
-      updateGame();
+      spaceinvaders.tirerUnMissile(new Dimension(Constante.MISSILE_LONGUEUR, Constante.MISSILE_HAUTEUR), Constante.MISSILE_VITESSE);
     }
   }
 
@@ -74,6 +64,7 @@ export default function App(props: IAppProps) {
         moveRight();
         break;
     }
+    updateGame();
   }
 
   return (

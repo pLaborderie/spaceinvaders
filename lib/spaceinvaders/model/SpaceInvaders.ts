@@ -5,15 +5,12 @@ import HorsEspaceJeuException from '../utils/HorsEspaceJeuException';
 import DebordementEspaceJeuException from '../utils/DebordementEspaceJeuException';
 import Missile from './Missile';
 import MissileException from '../utils/MissileException';
+import Constante from '../utils/Constante';
 import Direction from './Direction';
 import Envahisseur from './Envahisseur';
+import Jeu from './Jeu';
 
-export default class SpaceInvaders {
-  private static readonly MARQUE_FIN_LIGNE: string = '\n';
-  private static readonly MARQUE_VIDE: string = '.';
-  private static readonly MARQUE_VAISSEAU: string = 'V';
-  private static readonly MARQUE_MISSILE: string = 'M';
-  private static readonly MARQUE_ENVAHISSEUR: string = 'E';
+export default class SpaceInvaders implements Jeu {
 
   private longueur: number;
   private hauteur: number;
@@ -32,22 +29,22 @@ export default class SpaceInvaders {
       for (let x: number = 0; x < this.longueur; x++) {
         espaceDeJeu += this.recupererMarqueDeLaPosition(x, y);
       }
-      espaceDeJeu += SpaceInvaders.MARQUE_FIN_LIGNE;
+      espaceDeJeu += Constante.MARQUE_FIN_LIGNE;
     }
     return espaceDeJeu;
   }
 
   private recupererMarqueDeLaPosition(x: number, y: number): string {
     if (this.aUnVaisseauQuiOccupeLaPosition(x, y)) {
-      return SpaceInvaders.MARQUE_VAISSEAU;
+      return Constante.MARQUE_VAISSEAU;
     }
     if (this.aUnMissileQuiOccupeLaPosition(x, y)) {
-      return SpaceInvaders.MARQUE_MISSILE;
+      return Constante.MARQUE_MISSILE;
     }
     if (this.aUnEnvahisseurQuiOccupeLaPosition(x, y)) {
-      return SpaceInvaders.MARQUE_ENVAHISSEUR;
+      return Constante.MARQUE_ENVAHISSEUR;
     }
-    return SpaceInvaders.MARQUE_VIDE;
+    return Constante.MARQUE_VIDE;
   }
 
   aUnEnvahisseurQuiOccupeLaPosition(x: number, y: number): boolean {
@@ -174,5 +171,25 @@ export default class SpaceInvaders {
       return false;
     }
     return this.envahisseur.abscisseLaPlusAGauche() === 0;
+  }
+
+  public evoluer(): void {
+    this.deplacerMissile();
+    this.deplacerEnvahisseur();
+  }
+
+  public initialiserJeu(): void {
+    const positionVaisseau: Position = new Position(this.longueur / 2, this.hauteur - 1);
+    const dimensionVaisseau: Dimension = new Dimension(Constante.VAISSEAU_LONGUEUR, Constante.VAISSEAU_HAUTEUR);
+
+    const positionEnvahisseur: Position = new Position(this.longueur / 2, Constante.ENVAHISSEUR_HAUTEUR - 1);
+    const dimensionEnvahisseur: Dimension = new Dimension(Constante.ENVAHISSEUR_LONGUEUR, Constante.ENVAHISSEUR_HAUTEUR);
+
+    this.positionnerUnNouveauVaisseau(dimensionVaisseau, positionVaisseau);
+    this.positionnerUnNouvelEnvahisseur(dimensionEnvahisseur, positionEnvahisseur);
+  }
+
+  public etreFini(): boolean {
+    return false;
   }
 }
